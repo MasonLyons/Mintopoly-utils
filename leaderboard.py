@@ -32,7 +32,7 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
     startNumber = rank - 10
     if startNumber < 0:
         startNumber = 0
-    leaderboardUrl = f"https://api.mintopoly.io/game/leaderboard?round=26&sliceStart={startNumber}&sliceEnd={rank + 10}"
+    leaderboardUrl = f"https://api.mintopoly.io/game/leaderboard?round={round}&sliceStart={startNumber}&sliceEnd={rank + 10}"
     response = requests.get(leaderboardUrl)
     data = response.json()
     for player in data:
