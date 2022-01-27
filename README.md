@@ -1,4 +1,4 @@
-# Mintopoly-simulator
+# Mintopoly-utils
 A collection of tools to assist with the strategy of mintopoly
 
 # Getting started
