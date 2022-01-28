@@ -41,12 +41,12 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
             break
     for player in data:
         rank = str(player["rank"])
-        name = player["player"]["username"]
+        name = player["player"]["username"][:20]
         forks = str(player["forks"]["number"])
         forkBonus = str(player["forks"]["bonus"] * 100)
         cash = str(player["cashOnHand"])[:10]
         earning = str(player["lastTally"]["earningsPerBlock"])[:10]
-        staked = str(player["lastTally"]["stakedValue"])[:10]
+        staked = str(player["lastTally"]["stakedValue"])
         cashAndStaked = str(player["cashOnHand"] + player["lastTally"]["stakedValue"])
         networth = str(player["netWorth"])[:10]
         stakeGap = str(
