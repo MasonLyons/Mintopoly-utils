@@ -29,6 +29,7 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
     table.add_column("Earnings")
     table.add_column("Total block earnings")
     table.add_column("Networth Gap")
+    table.add_column("Blocks to catch")
     startNumber = rank - 10
     if startNumber < 0:
         startNumber = 0
@@ -38,6 +39,10 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
     for player in data:
         if player["player"]["address"].lower() == address.lower():
             myNetworth = player["netWorth"]
+            MyTotalEarnings = player["lastTally"]["earningsPerBlock"] + (
+                player["lastTally"]["stakedValue"] * 0.00015
+            )
+
             break
     for player in data:
         rank = str(player["rank"])
@@ -55,39 +60,43 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
         netWorthGap = str(player["netWorth"] - myNetworth)[:10]
         totalEarnings = str(
             player["lastTally"]["earningsPerBlock"]
-            + (player["lastTally"]["stakedValue"] / 5000)
+            + (player["lastTally"]["stakedValue"] * 0.00015)
         )[:10]
-        if player["player"]["address"] == address:
-            table.add_row(
-                rank,
-                name,
-                networth,
-                forks,
-                forkBonus,
-                cash,
-                staked,
-                cashAndStaked,
-                stakeGap,
-                earning,
-                totalEarnings,
-                netWorthGap,
-                style="bold green",
+        if (
+            player["lastTally"]["earningsPerBlock"]
+            + (player["lastTally"]["stakedValue"] * 0.00015)
+            < MyTotalEarnings
+        ):
+            earningsGap = (
+                MyTotalEarnings
+                - player["lastTally"]["earningsPerBlock"]
+                + (player["lastTally"]["stakedValue"] * 0.00015)
             )
+            blocksToCatch = str((player["netWorth"] - myNetworth) / earningsGap)
+            if float(blocksToCatch) < 0:
+                blocksToCatch = ""
         else:
-            table.add_row(
-                rank,
-                name,
-                networth,
-                forks,
-                forkBonus,
-                cash,
-                staked,
-                cashAndStaked,
-                stakeGap,
-                earning,
-                totalEarnings,
-                netWorthGap,
-            )
+            blocksToCatch = ""
+        if player["player"]["address"] == address:
+            style = "bold green"
+        else:
+            style = ""
+        table.add_row(
+            rank,
+            name,
+            networth,
+            forks,
+            forkBonus,
+            cash,
+            staked,
+            cashAndStaked,
+            stakeGap,
+            earning,
+            totalEarnings,
+            netWorthGap,
+            blocksToCatch,
+            style=style,
+        )
     return table
 
 
