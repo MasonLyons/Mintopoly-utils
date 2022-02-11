@@ -45,7 +45,7 @@ def generate_table(round: int, address: str, bearer: str) -> Table:
 
             break
     for player in data:
-        rank = str(player["rank"])
+        rank = str(player["leaderboard"]["rank"])
         name = player["player"]["username"][:20]
         forks = str(player["forks"]["number"])
         forkBonus = str(player["forks"]["bonus"] * 100)
